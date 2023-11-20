@@ -1,22 +1,31 @@
 package ishell
 
-// Context is an ishell context. It embeds ishell.Actions.
-type Context struct {
-	contextValues
-	progressBar ProgressBar
-	err         error
+type (
+	// Context is an ishell context. It embeds ishell.Actions.
+	Context struct {
+		contextValues
+		progressBar ProgressBar
+		err         error
 
-	// Args is command arguments.
-	Args []string
+		// Args is command arguments.
+		Args []string
 
-	// RawArgs is unprocessed command arguments.
-	RawArgs []string
+		// RawArgs is unprocessed command arguments.
+		RawArgs []string
 
-	// Cmd is the currently executing command. This is empty for NotFound and Interrupt.
-	Cmd Cmd
+		Params []Param
 
-	Actions
-}
+		// Cmd is the currently executing command. This is empty for NotFound and Interrupt.
+		Cmd Cmd
+
+		Actions
+	}
+
+	Param struct {
+		Key   string
+		Value string
+	}
+)
 
 // Err informs ishell that an error occurred in the current
 // function.

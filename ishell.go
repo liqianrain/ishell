@@ -18,9 +18,9 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/abiosoft/readline"
 	"github.com/fatih/color"
 	shlex "github.com/flynn-archive/go-shlex"
+	"github.com/liqianrain/readline"
 )
 
 const (
@@ -266,7 +266,8 @@ func (s *Shell) handleCommand(str []string) (bool, error) {
 			str[i] = strings.ToLower(str[i])
 		}
 	}
-	cmd, args := s.rootCmd.FindCmd(str)
+	ctx := &Context{}
+	cmd, args := s.rootCmd.FindCmd(str, ctx)
 	if cmd == nil {
 		return false, nil
 	}
@@ -276,6 +277,8 @@ func (s *Shell) handleCommand(str []string) (bool, error) {
 		return true, nil
 	}
 	c := newContext(s, cmd, args)
+	c.Params = ctx.Params
+
 	cmd.Func(c)
 	return true, c.err
 }
@@ -359,7 +362,11 @@ func (s *Shell) readMultiLinesFunc(f func(string) bool) (string, error) {
 }
 
 func (s *Shell) initCompleters() {
-	s.setCompleter(iCompleter{cmd: s.rootCmd, disabled: func() bool { return s.multiChoiceActive }})
+	s.setCompleter(iCompleter{
+		shell:    s,
+		cmd:      s.rootCmd,
+		disabled: func() bool { return s.multiChoiceActive },
+	})
 }
 
 func (s *Shell) setCompleter(completer readline.AutoCompleter) {

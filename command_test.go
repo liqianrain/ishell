@@ -1,9 +1,8 @@
-package ishell_test
+package ishell
 
 import (
 	"testing"
 
-	"github.com/abiosoft/ishell/v2"
 	"github.com/stretchr/testify/assert"
 )
 

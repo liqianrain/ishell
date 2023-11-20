@@ -3,12 +3,11 @@ package main
 import (
 	"errors"
 	"fmt"
+	"github.com/fatih/color"
+	"github.com/liqianrain/ishell"
 	"os"
 	"strings"
 	"time"
-
-	"github.com/abiosoft/ishell/v2"
-	"github.com/fatih/color"
 )
 
 func main() {
@@ -229,6 +228,24 @@ This is another line of it.
 			c.Print(cyan("cyan\n"))
 			c.Println(yellow("yellow"))
 			c.Printf("%s\n", boldRed("bold red"))
+		},
+	})
+
+	// handle params in command path, add additional arguments for auto-complete
+	shell.AddCmd(&ishell.Cmd{
+		Name: "hello/:user",
+		Help: "hello with user name",
+		Args: []ishell.Arg{
+			{
+				Name:     "arg",
+				Pair:     true,
+				Optional: false,
+				Help:     "additional args",
+			},
+		},
+		Func: func(c *ishell.Context) {
+			fmt.Println("Hello:", c.Params)
+			fmt.Println("with args: ", c.Args)
 		},
 	})
 

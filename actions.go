@@ -165,8 +165,12 @@ func (s *shellActionsImpl) ShowPrompt(show bool) {
 
 func (s *shellActionsImpl) Cmds() []*Cmd {
 	var cmds []*Cmd
-	for _, cmd := range s.rootCmd.children {
+	for _, cmd := range s.rootCmd.staticChildren {
 		cmds = append(cmds, cmd)
+	}
+
+	if s.rootCmd.paramChild != nil {
+		cmds = append(cmds, s.rootCmd.paramChild)
 	}
 	return cmds
 }

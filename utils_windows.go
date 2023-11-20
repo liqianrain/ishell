@@ -1,9 +1,10 @@
+//go:build windows
 // +build windows
 
 package ishell
 
 import (
-	"github.com/abiosoft/readline"
+	"github.com/liqianrain/readline"
 )
 
 func clearScreen(s *Shell) error {
